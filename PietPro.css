@@ -16,7 +16,6 @@ td.ccell{
 	height:1em;
 	border:solid #bbb 1px;
 	cursor:pointer;
-	
 }
 
 table.ccell{
@@ -25,4 +24,16 @@ table.ccell{
 
 .selected{
 	border:solid #000 1px !important;
+}
+
+td.fcell{
+
+	width:1em;
+	height:1em;
+	border:solid #bbb 1px;
+	cursor:pointer;
+}
+
+table.fcell{
+	border:solid #bbb 2px;
 }
