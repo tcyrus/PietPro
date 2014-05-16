@@ -1,0 +1,28 @@
+td.cell{
+
+	width:1em;
+	height:1em;
+	border:solid #bbb 1px;
+	cursor:pointer;
+}
+
+table.cell{
+	border:solid #bbb 2px;
+}
+
+td.ccell{
+
+	width:1em;
+	height:1em;
+	border:solid #bbb 1px;
+	cursor:pointer;
+	
+}
+
+table.ccell{
+	border:solid #bbb 2px;
+}
+
+.selected{
+	border:solid #000 1px !important;
+}
