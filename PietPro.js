@@ -1,5 +1,3 @@
-window.meteorSession = {};
-
 //colArr is [hue][shade]
 //rendered sideways
 var colArr = [
@@ -20,34 +18,31 @@ var commandArr = [
   ['in(char)', 'out(num)', 'out(char)'],
 ];
 
-window.meteorSession['currentCol'] = '#FFC0C0';
-window.meteorSession['rows'] = 12;
-window.meteorSession['cols'] = 4;
+currentCol = new Blaze.Var('#FFC0C0');
+rows = new Blaze.Var(12);
+cols = new Blaze.Var(4);
 
 function arrFind(arr, target) {
   //returns [row, col]
-  for(var x = 0; x < arr.length; x++)
-    if(arr[x].indexOf(target) > -1)
+  for (var x = 0; x < arr.length; x++)
+    if (arr[x].indexOf(target) > -1)
       return [x, arr[x].indexOf(target)];
   return [-1, -1];
 }
 
 Template.main.rows = function() {
-  return window.meteorSession['rows'];
+  return rows.get();
 }
 
 Template.main.cols = function() {
-  return window.meteorSession['cols'];
+  return cols.get();
 }
 
 Template.main.rowCol = function(row, col, cl) {
-  row = parseInt(row);
-  col = parseInt(col);
-  //just in case strings
   var ret = "<table class=" + cl + ">\n<tbody>\n";
-  for(var r = 0; r < row; r++){
+  for(var r = 0; r < row; r++) {
     ret+="<tr>\n";
-    for(var c = 0; c < col; c++){
+    for(var c = 0; c < col; c++) {
       ret+="<td class=" + cl + "></td>\n";
     }
     ret+="</tr>\n";
@@ -57,26 +52,28 @@ Template.main.rowCol = function(row, col, cl) {
 
 Template.main.printColors = function() {
   var ret = "<table class='ccell'>\n<tbody>\n";
-  for(var c = 0; c < colArr[0].length; c++){
+  for(var c = 0; c < colArr[0].length; c++) {
     ret+="<tr>\n";
-    for(var r = 0; r < colArr.length; r++){
+    for(var r = 0; r < colArr.length; r++) {
       ret+="<td style='background-color:" + colArr[r][c] + ";' class='ccell'></td>\n";
     }
     ret+="</tr>\n";
   }
-  return ret + "</tbody>\n</table>";
+  ret+="</tbody>\n</table>";
+  return ret;
 }
 
 Template.main.printFunctions = function() {
   var ret = "<table class='fcell'>\n<tbody>\n";
-  for(var c = 0; c < commandArr[0].length; c++){
+  for(var c = 0; c < commandArr[0].length; c++) {
     ret+="<tr>\n";
-    for(var r = 0; r < commandArr.length; r++){
+    for(var r = 0; r < commandArr.length; r++) {
       ret+="<td class='fcell'>" + commandArr[r][c] + "</td>\n";
     }
     ret+="</tr>\n";
   }
-  return ret + "</tbody>\n</table>";
+  ret+="</tbody>\n</table>";
+  return ret;
 }
 
 Template.main.rendered = function() {
@@ -87,7 +84,7 @@ Template.main.events({
   'click td.cell': function(event) {
     // template data, if any, is available in 'this'
     console.log(event);
-    event.target.style.backgroundColor = window.meteorSession['currentCol'];
+    event.target.style.backgroundColor = currentCol.get();
   },
   'click td.ccell': function(event) {
     // template data, if any, is available in 'this'
@@ -95,7 +92,7 @@ Template.main.events({
     console.log(event.target.style.backgroundColor)
     console.log(typeof event.target.style.backgroundColor)
     console.log(rgbToHex(event.target.style.backgroundColor));
-    window.meteorSession['currentCol'] = rgbToHex(event.target.style.backgroundColor);
+    currentCol.set(rgbToHex(event.target.style.backgroundColor));
 
     for(var x = 0; x < $('.selected').length; x++)
       $('.selected')[x].className = "ccell";
@@ -109,7 +106,7 @@ Template.main.events({
     if(coords[0] == 0 && coords[1] == 0)//&nbsp;
       return;
 
-    colCoords = arrFind(colArr, window.meteorSession['currentCol']);
+    colCoords = arrFind(colArr, currentCol.get());
     var r = (colCoords[0] + coords[0]) % colArr.length;
     var c = (colCoords[1] + coords[1]) % colArr[0].length;
 
@@ -121,7 +118,7 @@ Template.main.events({
     // console.log(coords);
     // console.log('col & coords above');
     // console.log(newCol);
-    window.meteorSession['currentCol'] = newCol;
+    currentCol.set(newCol);
     // console.log(newCol);
     setSelected(newCol, (r + colArr.length * c + 1));
   }
