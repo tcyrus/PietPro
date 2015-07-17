@@ -1,4 +1,5 @@
-if (Meteor.isClient) {
+window.meteorSession = {};
+Session = { set: function(key, val) { window.meteorSession[key] = val; }, get: function(key) { return window.meteorSession[key]; } };
 
   //colArr is [hue][shade]
   var colArr = [
@@ -39,7 +40,8 @@ var commandArr = [
 
   Template.main.rowCol = function(row, col, cl){
     row = parseInt(row);
-    col = parseInt(col);//just in case strings
+    col = parseInt(col);
+    //just in case strings
     var ret = "<table class=" + cl + ">\n<tbody>\n";
     for(var r = 0; r < row; r++){
       ret+="<tr>\n";
@@ -125,7 +127,8 @@ var commandArr = [
     }
   });
 
-  function setSelected(colCode, ind){//includes +1
+  function setSelected(colCode, ind){
+    //includes +1
     for(var x = 0; x < $('.selected').length; x++)
       $('.selected')[x].className = "ccell";
 
@@ -153,21 +156,10 @@ var commandArr = [
 
 
   function componentToHex(c) {
-      var hex = c.toString(16).toUpperCase();
-      return hex.length == 1 ? "0" + hex : hex;
+    var hex = c.toString(16).toUpperCase();
+    return hex.length == 1 ? "0" + hex : hex;
   }
 
   function rgbFin(arr) {
-      return "#" + componentToHex(arr[0]) + componentToHex(arr[1]) + componentToHex(arr[2]);
+    return "#" + componentToHex(arr[0]) + componentToHex(arr[1]) + componentToHex(arr[2]);
   }
-
-
-
-
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
